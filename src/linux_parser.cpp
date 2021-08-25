@@ -19,6 +19,7 @@ string LinuxParser::OperatingSystem() {
   std::ifstream filestream(kOSPath);
   if (filestream.is_open()) {
     while (std::getline(filestream, line)) {
+      // We need to operate through analyzing tokens so this creates each line into a key-value line consisting of two tokens. 
       std::replace(line.begin(), line.end(), ' ', '_');
       std::replace(line.begin(), line.end(), '=', ' ');
       std::replace(line.begin(), line.end(), '"', ' ');
@@ -68,6 +69,7 @@ vector<int> LinuxParser::Pids() {
 }
 
 // TODO: Read and return the system memory utilization
+// Must test this
 float LinuxParser::MemoryUtilization() 
 {
   string line;
@@ -90,7 +92,7 @@ float LinuxParser::MemoryUtilization()
 
   }
   
-  return total - free;;
+  return total - free;
 }
 
 // TODO: Read and return the system uptime
@@ -113,7 +115,35 @@ long LinuxParser::IdleJiffies() { return 0; }
 vector<string> LinuxParser::CpuUtilization() { return {}; }
 
 // TODO: Read and return the total number of processes
-int LinuxParser::TotalProcesses() { return 0; }
+int LinuxParser::TotalProcesses() { 
+  string line;
+  string key, value;
+  int processes;
+  std::ifstream stream(kProcDirectory + kStatFilename);
+  if (stream.is_open())
+  {
+    std::getline(stream, line, '\n');
+    std::istringstream linestream(line);
+    while (linestream >> key)
+    {
+      if (key == "processes")
+      {
+        linestream >> key >> value;
+
+      }
+    }
+
+  }
+  
+  
+  return 0; 
+  // http://cplusplus.com/forum/beginner/189237/ 
+  // https://github.com/microsoft/vscode/issues/38133
+  // https://stackoverflow.com/questions/13510453/c-reading-an-multiline-file-with-lines-with-arbitary-lengths-and-format-withou
+  // https://www.softwaretestinghelp.com/stringstream-class-in-cpp/
+  // https://en.cppreference.com/w/cpp/io/manip/setw
+  // https://stackoverflow.com/questions/30567930/reading-a-file-with-variable-line-lengths-c
+}
 
 // TODO: Read and return the number of running processes
 int LinuxParser::RunningProcesses() { return 0; }
