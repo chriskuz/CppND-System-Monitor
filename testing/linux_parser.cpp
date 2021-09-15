@@ -69,8 +69,8 @@ vector<int> LinuxParser::Pids() {
   return pids;
 }
 
-// TODO: Read and return the system memory utilization
-// Must test this
+// DONE: Read and return the system memory utilization
+// https://www.guru99.com/cpp-file-read-write-open.html
 float LinuxParser::MemoryUtilization() 
 {
   string line;
@@ -102,34 +102,37 @@ float LinuxParser::MemoryUtilization()
   return total - free;
 }
 
-// TODO: Read and return the total number of processes
-
-//Not finished....must test this also. 
-int LinuxParser::TotalProcesses() { 
+// DONE: Read and return the total number of processes
+int LinuxParser::TotalProcesses() 
+{ 
   string line;
-  string key, value;
-  int processes;
+  string key;
+  int value;
   std::ifstream stream(kProcDirectory + kStatFilename);
   if (stream.is_open())
   {
-    std::getline(stream, line, '\n');
-    std::istringstream linestream(line);
-    while (linestream >> key)
+    while (1)
     {
+      std::getline(stream, line, '\n');
+      std::istringstream linestream(line);
+      linestream >> key >> value;
       if (key == "processes")
       {
-        linestream >> key >> value;
+        return value;
       }
     }
-
   }
-  
-  
-  return 0; 
+  // http://cplusplus.com/forum/beginner/189237/ 
+  // https://github.com/microsoft/vscode/issues/38133
+  // https://stackoverflow.com/questions/13510453/c-reading-an-multiline-file-with-lines-with-arbitary-lengths-and-format-withou
+  // https://www.softwaretestinghelp.com/stringstream-class-in-cpp/
+  // https://en.cppreference.com/w/cpp/io/manip/setw
+  // https://stackoverflow.com/questions/30567930/reading-a-file-with-variable-line-lengths-c
 }
 
 int main()
 {
-  string test1 = LinuxParser::Kernel();
-  std::cout<<LinuxParser::MemoryUtilization() << "\n";
+  int test = LinuxParser::TotalProcesses();
+  std::cout << LinuxParser::MemoryUtilization() << "\n";
+  std::cout << LinuxParser::TotalProcesses() << "\n";
 }
