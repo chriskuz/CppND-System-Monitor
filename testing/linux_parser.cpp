@@ -130,9 +130,22 @@ int LinuxParser::TotalProcesses()
   // https://stackoverflow.com/questions/30567930/reading-a-file-with-variable-line-lengths-c
 }
 
+// TODO: Read and return the system uptime
+long LinuxParser::UpTime() 
+{ 
+  string line;
+  long system_uptime;
+  std::ifstream stream(kProcDirectory + kUptimeFilename);
+  if (stream.is_open())
+  {
+    std::getline(stream, line, '\n');
+    std::istringstream linestream(line);
+    linestream >> system_uptime;
+    return system_uptime;
+  } 
+}
+
 int main()
 {
-  int test = LinuxParser::TotalProcesses();
-  std::cout << LinuxParser::MemoryUtilization() << "\n";
-  std::cout << LinuxParser::TotalProcesses() << "\n";
+  long uptime = LinuxParser::UpTime();
 }
