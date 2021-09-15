@@ -25,7 +25,7 @@ string LinuxParser::OperatingSystem() {
       std::replace(line.begin(), line.end(), '=', ' ');
       std::replace(line.begin(), line.end(), '"', ' ');
       std::istringstream linestream(line);
-      while (linestream >> key >> value) {
+      while (linestream>>key>>value) {
         if (key == "PRETTY_NAME") {
           std::replace(value.begin(), value.end(), '_', ' ');
           return value;
@@ -79,17 +79,23 @@ float LinuxParser::MemoryUtilization()
   std::ifstream stream(kProcDirectory + kMeminfoFilename);
   if (stream.is_open())
   {
-    std::getline(stream, line);
-    std::istringstream linestream(line);
-    linestream >> key >> value >> size;
-    if (key == "MemTotal:")
+    while (1)
     {
-      total = stof(value);
+      std::getline(stream, line);
+      std::istringstream linestream(line);
+      linestream >> key >> value >> size;
+      if (key == "MemTotal:")
+      {
+        total = stof(value);
+      }
+      if (key == "MemFree:")
+      {
+        free = stof(value);
+        break;
+      }
+
     }
-    if (key == "MemFree:")
-    {
-      free = stof(value);
-    }
+
 
   }
   
@@ -124,6 +130,6 @@ int LinuxParser::TotalProcesses() {
 
 int main()
 {
-  string test1 = LinuxParser::OperatingSystem();
-  std::cout << test1;
+  string test1 = LinuxParser::Kernel();
+  std::cout<<LinuxParser::MemoryUtilization() << "\n";
 }
