@@ -146,6 +146,7 @@ long LinuxParser::UpTime()
 }
 
 // TODO: Read and return the number of jiffies for the system
+//https://superuser.com/questions/88820/how-to-obtain-the-current-number-of-jiffies-since-reboot-in-linux
 long LinuxParser::Jiffies() 
 { 
   return 0; 
