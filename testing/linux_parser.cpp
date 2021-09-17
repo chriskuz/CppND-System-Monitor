@@ -148,6 +148,7 @@ long LinuxParser::UpTime()
 // TODO: Read and return the number of jiffies for the system
 //https://superuser.com/questions/88820/how-to-obtain-the-current-number-of-jiffies-since-reboot-in-linux
 //https://www.anshulpatel.in/post/linux_cpu_percentage/
+//https://www.idnt.net/en-US/kb/941772
 long LinuxParser::Jiffies() 
 { 
   string line;
