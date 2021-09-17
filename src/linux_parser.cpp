@@ -143,7 +143,21 @@ long LinuxParser::ActiveJiffies(int pid[[maybe_unused]]) { return 0; }
 long LinuxParser::ActiveJiffies() { return 0; }
 
 // TODO: Read and return the number of idle jiffies for the system
-long LinuxParser::IdleJiffies() { return 0; }
+long LinuxParser::IdleJiffies() 
+{ 
+  string line;
+  string cpu;
+  int user_value, nice_value, system_value, idle_value;
+  std::ifstream stream(kProcDirectory + kStatFilename);
+
+  if (stream.is_open())
+  {
+    std::getline(stream, line, '\n');
+    std::istringstream linestream(line);
+    linestream >> cpu >> user_value >> nice_value >> system_value >> idle_value;
+    return idle_value; 
+  } 
+}
 
 // TODO: Read and return CPU utilization
 vector<string> LinuxParser::CpuUtilization() { return {}; }

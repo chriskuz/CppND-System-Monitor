@@ -164,6 +164,23 @@ long LinuxParser::Jiffies()
   }
 }
 
+// TODO: Read and return the number of idle jiffies for the system
+long LinuxParser::IdleJiffies() 
+{ 
+  string line;
+  string cpu;
+  int user_value, nice_value, system_value, idle_value;
+  std::ifstream stream(kProcDirectory + kStatFilename);
+
+  if (stream.is_open())
+  {
+    std::getline(stream, line, '\n');
+    std::istringstream linestream(line);
+    linestream >> cpu >> user_value >> nice_value >> system_value >> idle_value;
+    return idle_value; 
+  } 
+}
+
 // TODO: Read and return the number of running processes
 int LinuxParser::RunningProcesses() 
 { 
