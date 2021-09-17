@@ -147,9 +147,21 @@ long LinuxParser::UpTime()
 
 // TODO: Read and return the number of jiffies for the system
 //https://superuser.com/questions/88820/how-to-obtain-the-current-number-of-jiffies-since-reboot-in-linux
+//https://www.anshulpatel.in/post/linux_cpu_percentage/
 long LinuxParser::Jiffies() 
 { 
-  return 0; 
+  string line;
+  string cpu;
+  int user_value, nice_value, system_value;
+  std::ifstream stream(kProcDirectory + kStatFilename);
+
+  if (stream.is_open())
+  {
+    std::getline(stream, line, '\n');
+    std::istringstream linestream(line);
+    linestream >> cpu >> user_value >> nice_value >> system_value;
+    return system_value; 
+  }
 }
 
 // TODO: Read and return the number of running processes
@@ -176,5 +188,7 @@ int LinuxParser::RunningProcesses()
 
 int main()
 {
-  long test = LinuxParser::RunningProcesses();
+  int test = LinuxParser::Jiffies();
+  int test1 = LinuxParser::Jiffies();
+
 }
