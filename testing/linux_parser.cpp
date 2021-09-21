@@ -204,9 +204,15 @@ int LinuxParser::RunningProcesses()
   }
 }
 
+// TODO: Read and return CPU utilization
+// Make this a child of the existing Bonus Question or find a way to invoke upon that class....maybe use of "Friend"?
+vector<string> LinuxParser::CpuUtilization() 
+{ 
+  return {};
+}
+
 int main()
 {
-  int test = LinuxParser::Jiffies();
-  int test1 = LinuxParser::Jiffies();
+  vector<int> test = LinuxParser::Pids();
 
 }
